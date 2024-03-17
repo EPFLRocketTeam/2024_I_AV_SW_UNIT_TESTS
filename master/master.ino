@@ -7,7 +7,6 @@ inline bool SPI_available();
 
 // MASTER - BOARD 1 //
 
-
 void setup() {
   SPI.begin();
   Serial.begin(9600);
@@ -17,11 +16,10 @@ void setup() {
 
 void loop() {
   digitalWrite(SS, LOW);
-  SPI.transfer('S');
-  SPI.transfer('P');
-  SPI.transfer('E');
-  SPI.transfer('A');
-  SPI.transfer('K');
+  String message = "SPEAK";
+  for(char c : message) {
+    SPI.transfer(c);
+  }
   digitalWrite(SS, HIGH);
 
   delay(500);
