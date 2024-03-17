@@ -1,5 +1,6 @@
 #include <SPI.h>
- 
+#include <Arduino.h>
+
 // SLAVE - BOARD 2 //
 
 void setup() {
@@ -15,19 +16,22 @@ void loop() {
     while(true) {
       char receivedChar = SPI.transfer(0);
       if(receivedChar == '\0') {
-        break
+        break;
       }
+
       receivedMessage += receivedChar;
     }
 
     if(receivedMessage == "SPEAK") {
       String response = "ECHO";
       for(char c : response) {
-        SPI.transfer(0);
+        SPI.transfer(c);
       }
-      Serial.println("ECHO");
+      Serial.println(response);
       Serial.println("MESSAGE : A SIGNAL HAS BEEN SENT TO BOARD 2 (THE SLAVE)");
       Serial.println("RESPONSE : OK");
     }
   }
 }
+
+
