@@ -14,17 +14,12 @@ struct IntranetPacket {
 
 uint8_t computeCSC(const IntranetPacket& packet);
 
-char buf [100];
-volatile byte pos;
-volatile boolean process_it;
-
 const IntranetPacket response = {0x02, 4, computeCSC(response), {"ECHO"}};
 const String response_payload = response.payload;
 
-//response.id = 0x02;
-//response.len = 4;
-//response.payload = {'ECHO'};
-//response.csc = computeCSC(response);
+char buf [100];
+volatile byte pos;
+volatile boolean process_it;
 
 void setup(void) {
   Serial.begin(9600);   // debugging
