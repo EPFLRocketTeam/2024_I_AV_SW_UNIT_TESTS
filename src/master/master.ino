@@ -17,13 +17,13 @@ struct intranet_packet_t {
         } void_packet;
 
         struct speak_packet_t {
-            const char payload[6] = "SPEAK";
+            char payload[6];
             RESERVE_REMAINING(6);
             uint8_t csc = 0x00;
         } speak_packet;
 
         struct echo_packet_t {
-            const char payload[5] = "ECHO";
+            char payload[5];
             RESERVE_REMAINING(5);
             uint8_t csc = 0x00;
         } echo_packet;
@@ -35,8 +35,6 @@ static intranet_packet_t VOID_PACKET {.id = 0x00};
 static intranet_packet_t SPEAK_PACKET {.id = 0x01};
 static intranet_packet_t RESPONSE_PACKET {};
 
-static uint8_t buffer[sizeof(intranet_packet_t)];
-
 void setup() {
     Serial.begin(9600);
 
@@ -47,8 +45,9 @@ void setup() {
 
     SPI.begin();
     VOID_PACKET.data.void_packet.csc = compute_csc(VOID_PACKET);
-    SPEAK_PACKET.data.speak_packet.csc = compute_csc(SPEAK_PACKET);
 
+    memcpy(SPEAK_PACKET.data.speak_packet.payload, "SPEAK", sizeof(SPEAK_PACKET.data.speak_packet.payload));
+    SPEAK_PACKET.data.speak_packet.csc = compute_csc(SPEAK_PACKET);
 }
 
 void loop() {
@@ -70,7 +69,7 @@ void loop() {
     Serial.println("ID: " + String(RESPONSE_PACKET.id));
     Serial.println("DATA: " + String((char*)RESPONSE_PACKET.data.raw));
     Serial.println("CSC: " + String(RESPONSE_PACKET.data.void_packet.csc));
-    Serial.println("VALID ?: " + String(RESPONSE_PACKET.data.void_packet.csc == compute_csc(RESPONSE_PACKET) ? "YES" : "NO");
+    Serial.println("VALID ?: " + String(RESPONSE_PACKET.data.void_packet.csc == compute_csc(RESPONSE_PACKET) ? "YES" : "NO"));
 
     Serial.println("");
     delay(1000);
