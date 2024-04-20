@@ -41,9 +41,7 @@ static volatile uint32_t packetIdx = 0;
 void setup() {
     Serial.begin(9600);
 
-    Serial.println("========================");
     Serial.println("UNIT TEST 01 > SLAVE");
-    Serial.println("========================");
     Serial.println("");
 
     // turn on SPI in slave mode
